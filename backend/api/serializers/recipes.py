@@ -32,7 +32,7 @@ class TagSerializer(serializers.ModelSerializer):
     """Сериализатор для работы с тегами."""
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('id', 'name', 'color', 'slug')
         read_only_fields = ('__all__',)
 
 
@@ -64,6 +64,7 @@ class AddIngredientSerializer(serializers.ModelSerializer):
     """
     Сериализатор для добавления ингредиента при создании рецепта.
     """
+
     id = serializers.PrimaryKeyRelatedField(
         queryset=Ingredient.objects.all(), source='ingredient'
     )
@@ -78,6 +79,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     Сериализатор создания рецепта.
     Валидирует ингредиенты ответ возвращает GetRecipeSerializer.
     """
+
     author = UsersSerializer(read_only=True)
     image = Base64ImageField()
     ingredients = AddIngredientSerializer(many=True)
@@ -145,6 +147,7 @@ class GetRecipeSerializer(serializers.ModelSerializer):
     """
     Сериализатор для отображения полной информации о рецепте.
     """
+
     tags = TagSerializer(many=True)
     author = UsersSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(
@@ -185,6 +188,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     """
     Сериализатор добавления/удаления рецепта в избранное.
     """
+
     class Meta:
         model = Favorite
         fields = ('user', 'recipe')
@@ -204,6 +208,7 @@ class ShoppingCartSerializer(FavoriteSerializer):
     """
     Сериализатор добавления/удаления рецепта в список покупок.
     """
+
     class Meta(FavoriteSerializer.Meta):
         model = ShoppingCart
 
@@ -212,6 +217,7 @@ class RecipeInfoSerializer(serializers.ModelSerializer):
     """
     Сериализатор для отображения краткой информации о рецепте.
     """
+
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')

@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
 
@@ -54,6 +54,10 @@ class Recipe(models.Model):
                 limit_value=1,
                 message='Время приготовления не может быть менее одной минуты.',
             ),
+            MaxValueValidator(
+                limit_value=300,
+                message='Очень долго ждать...',
+            ),
         ),
     )
     author = models.ForeignKey(
@@ -95,6 +99,10 @@ class RecipeIngredient(models.Model):
         validators=(
             MinValueValidator(
                 limit_value=0.01, message='Количество должно быть больше нуля!'
+            ),
+            MaxValueValidator(
+                limit_value=32,
+                message='Слишком много!',
             ),
         ),
     )

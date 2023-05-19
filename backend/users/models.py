@@ -46,14 +46,6 @@ class Follow(models.Model):
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
-        return f'Автор: {self.author}, подписчик: {self.user}'
-
-    def save(self, **kwargs):
-        if self.user == self.author:
-            raise ValidationError("Невозможно подписаться на себя!")
-        super().save()
-
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
@@ -62,3 +54,11 @@ class Follow(models.Model):
                 fields=['author', 'user'], name='unique_follower'
             )
         ]
+
+    def __str__(self):
+        return f'Автор: {self.author}, подписчик: {self.user}'
+
+    def save(self, **kwargs):
+        if self.user == self.author:
+            raise ValidationError("Невозможно подписаться на себя!")
+        super().save()
