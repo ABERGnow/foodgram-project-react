@@ -1,4 +1,4 @@
-django==4.2.1
+django==3.2
 djangorestframework==3.14
 django-filter==23.2
 postgres==4.0
