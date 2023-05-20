@@ -1,7 +1,6 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
-
 from users.models import Follow, User
 
 
