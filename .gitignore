@@ -133,4 +133,4 @@ dmypy.json
 
 # Static & media
 back_media/
-static/
+back_static/
