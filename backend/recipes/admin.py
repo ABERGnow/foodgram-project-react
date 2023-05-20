@@ -1,6 +1,6 @@
 from django.contrib.admin import ModelAdmin, register
 
-from recipes.models import (
+from .models import (
     Favorite,
     Ingredient,
     Recipe,
