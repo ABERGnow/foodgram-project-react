@@ -1,11 +1,15 @@
-from api.paginations import LimitPagination
-from api.serializers.users import FollowSerializer, UsersSerializer
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
+
+from api.paginations import LimitPagination
+from api.serializers.users import FollowSerializer, UsersSerializer
 from users.models import Follow, User
 
 
@@ -62,5 +66,7 @@ class UsersViewSet(UserViewSet):
         user = request.user
         follows = User.objects.filter(following__user=user)
         page = self.paginate_queryset(follows)
-        serializer = FollowSerializer(page, many=True, context={"request": request})
+        serializer = FollowSerializer(
+            page, many=True, context={"request": request}
+        )
         return self.get_paginated_response(serializer.data)

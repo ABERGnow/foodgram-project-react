@@ -1,6 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
+
 from users.models import Follow, User
 
 
@@ -24,7 +25,9 @@ class UsersCreateSerializer(UserCreateSerializer):
 
     def validate_username(self, value):
         if value == "me":
-            raise ValidationError("Невозможно создать пользователя с таким именем!")
+            raise ValidationError(
+                "Невозможно создать пользователя с таким именем!"
+            )
         return value
 
 

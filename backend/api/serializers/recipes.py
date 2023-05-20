@@ -1,8 +1,11 @@
 import base64
 
-from api.serializers.users import UsersSerializer
 from django.core.files.base import ContentFile
 from django.db import transaction
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
+from api.serializers.users import UsersSerializer
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -11,8 +14,6 @@ from recipes.models import (
     ShoppingCart,
     Tag,
 )
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 
 class Base64ImageField(serializers.ImageField):
@@ -51,7 +52,9 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     """
 
     name = serializers.CharField(source="ingredient.name", read_only=True)
-    id = serializers.PrimaryKeyRelatedField(source="ingredient.id", read_only=True)
+    id = serializers.PrimaryKeyRelatedField(
+        source="ingredient.id", read_only=True
+    )
     measurement_unit = serializers.CharField(
         source="ingredient.measurement_unit", read_only=True
     )
@@ -105,7 +108,9 @@ class RecipeSerializer(serializers.ModelSerializer):
             len(set(list_ingr)),
         )
         if all_ingredients != distinct_ingredients:
-            raise ValidationError({"error": "Ингредиенты должны быть уникальными"})
+            raise ValidationError(
+                {"error": "Ингредиенты должны быть уникальными"}
+            )
         return data
 
     def get_ingredients(self, recipe, ingredients):

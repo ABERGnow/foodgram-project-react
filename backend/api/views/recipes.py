@@ -1,3 +1,13 @@
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from reportlab.pdfbase import pdfmetrics, ttfonts
+from reportlab.pdfgen import canvas
+
 from api.filters import IngredientFilter, RecipeFilter
 from api.paginations import LimitPagination
 from api.permissions import IsAuthorOrReadOnly
@@ -8,16 +18,7 @@ from api.serializers.recipes import (
     ShoppingCartSerializer,
     TagSerializer,
 )
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from django_filters.rest_framework import DjangoFilterBackend
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
-from reportlab.pdfbase import pdfmetrics, ttfonts
-from reportlab.pdfgen import canvas
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -59,7 +60,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def action_post_delete(self, pk, serializer_class):
         user = self.request.user
         recipe = get_object_or_404(Recipe, pk=pk)
-        object = serializer_class.Meta.model.objects.filter(user=user, recipe=recipe)
+        object = serializer_class.Meta.model.objects.filter(
+            user=user, recipe=recipe
+        )
 
         if self.request.method == "POST":
             serializer = serializer_class(
@@ -90,7 +93,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=False)
     def download_shopping_cart(self, request):
         response = HttpResponse(content_type="application/pdf")
-        response["Content-Disposition"] = "attachment; filename='shopping_cart.pdf'"
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename='shopping_cart.pdf'"
         p = canvas.Canvas(response)
         arial = ttfonts.TTFont("Arial", "data/arial.ttf")
         pdfmetrics.registerFont(arial)
@@ -98,7 +103,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         ingredients = RecipeIngredient.objects.filter(
             recipe__shopping_cart__user=request.user
-        ).values_list("ingredient__name", "amount", "ingredient__measurement_unit")
+        ).values_list(
+            "ingredient__name", "amount", "ingredient__measurement_unit"
+        )
 
         ingr_list = {}
         for name, amount, unit in ingredients:
@@ -110,7 +117,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         p.drawString(100, 750, "Список покупок")
         for i, (name, data) in enumerate(ingr_list.items(), start=1):
-            p.drawString(80, height, f"{i}. {name} – {data['amount']} {data['unit']}")
+            p.drawString(
+                80, height, f"{i}. {name} – {data['amount']} {data['unit']}"
+            )
             height -= 25
         p.showPage()
         p.save()

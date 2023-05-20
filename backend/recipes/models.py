@@ -7,8 +7,12 @@ User = get_user_model()
 
 
 class Ingredient(models.Model):
-    name = models.CharField(verbose_name="Название ингредиента", max_length=100)
-    measurement_unit = models.CharField(verbose_name="Единица измерения", max_length=15)
+    name = models.CharField(
+        verbose_name="Название ингредиента", max_length=100
+    )
+    measurement_unit = models.CharField(
+        verbose_name="Единица измерения", max_length=15
+    )
 
     class Meta:
         verbose_name = "Ингредиент"
@@ -19,7 +23,9 @@ class Ingredient(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(verbose_name="Название", max_length=16, unique=True)
+    name = models.CharField(
+        verbose_name="Название", max_length=16, unique=True
+    )
     color = models.CharField(max_length=16, verbose_name="Цвет")
     slug = models.SlugField(max_length=16, verbose_name="Слаг", unique=True)
 
@@ -60,8 +66,12 @@ class Recipe(models.Model):
         related_name="recipes",
         verbose_name="Автор",
     )
-    tags = models.ManyToManyField(Tag, verbose_name="Теги", related_name="recipes")
-    pub_date = models.DateTimeField(auto_now=True, verbose_name="Дата публикации")
+    tags = models.ManyToManyField(
+        Tag, verbose_name="Теги", related_name="recipes"
+    )
+    pub_date = models.DateTimeField(
+        auto_now=True, verbose_name="Дата публикации"
+    )
 
     class Meta:
         ordering = ["-pub_date"]
@@ -132,7 +142,9 @@ class Favorite(models.Model):
         verbose_name = "Избранный рецепт"
         verbose_name_plural = "Избранные рецепты"
         constraints = (
-            UniqueConstraint(fields=("user", "recipe"), name="unique favorite"),
+            UniqueConstraint(
+                fields=("user", "recipe"), name="unique favorite"
+            ),
         )
 
     def __str__(self):

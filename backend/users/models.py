@@ -23,7 +23,9 @@ class User(AbstractUser):
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
         constraints = [
-            models.UniqueConstraint(fields=("username", "email"), name="unique_user")
+            models.UniqueConstraint(
+                fields=("username", "email"), name="unique_user"
+            )
         ]
 
     def __str__(self):
@@ -48,7 +50,9 @@ class Follow(models.Model):
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
         constraints = [
-            models.UniqueConstraint(fields=["author", "user"], name="unique_follower")
+            models.UniqueConstraint(
+                fields=["author", "user"], name="unique_follower"
+            )
         ]
 
     def __str__(self):
