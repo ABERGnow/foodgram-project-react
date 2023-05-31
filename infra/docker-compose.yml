@@ -9,7 +9,9 @@ services:
       - ./.env
 
   backend:
-    image: rasul24/backend:latest
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     restart: always
     volumes:
       - static_value:/app/back_static/
@@ -21,7 +23,9 @@ services:
       - ./.env
 
   frontend:
-    image: rasul24/frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
@@ -38,8 +42,6 @@ services:
       - ./ssl/:/etc/nginx/ssl/
       - static_value:/var/html/back_static/
       - media_value:/var/html/back_media/
-    depends_on:
-      - frontend
     restart: always
 
 volumes:
