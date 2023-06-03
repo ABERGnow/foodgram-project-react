@@ -2,7 +2,7 @@ version: '2.2'
 services:
 
   frontend:
-    image: rasul24/frontend:v1.0
+    image: rasul24/foodgram_frontend:v1.0
     volumes:
       - ../frontend/:/app/result_build/
 
@@ -14,7 +14,7 @@ services:
       - ./.env
 
   backend:
-    image: rasul24/backend:v1.0
+    image: rasul24/foodgram_backend:v1.0
     restart: always
     volumes:
       - static_value:/app/back_static/
