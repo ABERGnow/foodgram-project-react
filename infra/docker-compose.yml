@@ -9,9 +9,7 @@ services:
       - ./.env
 
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: rasul24/backend:v1.0
     restart: always
     volumes:
       - static_value:/app/back_static/
@@ -23,9 +21,7 @@ services:
       - ./.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: rasul24/frontend:v1.0
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
