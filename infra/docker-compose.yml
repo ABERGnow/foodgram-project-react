@@ -13,18 +13,6 @@ services:
     env_file:
       - ./.env
 
-  backend:
-    image: rasul24/foodgram_backend:v1.0
-    restart: always
-    volumes:
-      - static_value:/app/back_static/
-      - media_value:/app/back_media/
-      - docs:/app/api/docs/
-    depends_on:
-      - db
-    env_file:
-      - ./.env
-
   nginx:
     image: nginx:1.19.3
     ports:
@@ -38,6 +26,18 @@ services:
       - media_value:/var/html/back_media/
     depends_on:
       - backend
+
+  backend:
+    image: rasul24/foodgram_backend:v1.0
+    restart: always
+    volumes:
+      - static_value:/app/back_static/
+      - media_value:/app/back_media/
+      - docs:/app/api/docs/
+    depends_on:
+      - db
+    env_file:
+      - ./.env
 
 volumes:
   static_value:
