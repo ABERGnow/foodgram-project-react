@@ -99,11 +99,11 @@ class RecipeIngredient(models.Model):
         validators=(
             MinValueValidator(
                 limit_value=0.01, message="Количество должно быть больше нуля!"
-            ),
-            MaxValueValidator(
-                limit_value=32,
-                message="Слишком много!",
-            ),
+            # ),
+            # MaxValueValidator(
+            #     limit_value=32,
+            #     message="Слишком много!",
+            # ),
         ),
     )
 
