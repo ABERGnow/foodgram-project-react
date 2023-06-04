@@ -51,11 +51,11 @@ class Recipe(models.Model):
         verbose_name="Время приготовления",
         validators=(
             MinValueValidator(
-                limit_value=1,
+                (1),
                 message="Время приготовления не менее одной минуты!",
             ),
             MaxValueValidator(
-                limit_value=300,
+                (300),
                 message="Очень долго ждать...",
             ),
         ),
@@ -98,10 +98,10 @@ class RecipeIngredient(models.Model):
         verbose_name="Количество",
         validators=(
             MinValueValidator(
-                limit_value=1, message="Количество должно быть больше нуля!"
+                (1), message="Количество должно быть больше нуля!"
             ),
             MaxValueValidator(
-                limit_value=32,
+                (32),
                 message="Слишком много!",
             ),
         ),
