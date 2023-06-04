@@ -49,16 +49,16 @@ class Recipe(models.Model):
     text = models.TextField(verbose_name="Описание")
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name="Время приготовления",
-        validators=(
+        validators=[
             MinValueValidator(
-                (1),
+                limit_value=1,
                 message="Время приготовления не менее одной минуты!",
             ),
             MaxValueValidator(
-                (300),
+                limit_value=300,
                 message="Очень долго ждать...",
             ),
-        ),
+        ],
     )
     author = models.ForeignKey(
         User,
@@ -96,15 +96,15 @@ class RecipeIngredient(models.Model):
     )
     amount = models.PositiveSmallIntegerField(
         verbose_name="Количество",
-        validators=(
+        validators=[
             MinValueValidator(
-                (1), message="Количество должно быть больше нуля!"
+                limit_value=1, message="Количество должно быть больше нуля!"
             ),
             MaxValueValidator(
-                (32),
+                limit_value=32,
                 message="Слишком много!",
             ),
-        ),
+        ],
     )
 
     class Meta:
