@@ -98,12 +98,12 @@ class RecipeIngredient(models.Model):
         verbose_name="Количество",
         validators=(
             MinValueValidator(
-                limit_value=0.01, message="Количество должно быть больше нуля!"
-            # ),
-            # MaxValueValidator(
-            #     limit_value=32,
-            #     message="Слишком много!",
-            # ),
+                limit_value=1, message="Количество должно быть больше нуля!"
+            ),
+            MaxValueValidator(
+                limit_value=32,
+                message="Слишком много!",
+            ),
         ),
     )
 
