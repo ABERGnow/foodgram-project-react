@@ -97,7 +97,6 @@ DATABASES = {
 ```bash
 python manage.py runserver
 ```
-
 'Суперюзер: rasul24@mail.ru'
 'Пароль: a4025993'
 'IP адрес: 51.250.66.109'
