@@ -51,9 +51,10 @@ class Recipe(models.Model):
         verbose_name="Время приготовления",
         validators=[
             MinValueValidator(
-                1, message="Время приготовления не менее одной минуты!"
+                limit_value=1,
+                message="Время приготовления не менее одной минуты!",
             ),
-            MaxValueValidator(300, message="Очень долго ждать..."),
+            MaxValueValidator(limit_value=300, message="Очень долго ждать..."),
         ],
     )
     author = models.ForeignKey(
@@ -94,9 +95,9 @@ class RecipeIngredient(models.Model):
         verbose_name="Количество",
         validators=[
             MinValueValidator(
-                1, message="Количество должно быть больше нуля!"
+                limit_value=1, message="Количество должно быть больше нуля!"
             ),
-            MaxValueValidator(100, message="Слишком много!"),
+            MaxValueValidator(limit_value=30, message="Слишком много!"),
         ],
     )
 
