@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -96,9 +94,9 @@ class RecipeIngredient(models.Model):
         verbose_name="Количество",
         validators=[
             MinValueValidator(
-                Decimal('0.01'), message="Количество должно быть больше нуля!"
+                1, message="Количество должно быть больше нуля!"
             ),
-            # MaxValueValidator(32, message="Слишком много!"),
+            MaxValueValidator(100, message="Слишком много!"),
         ],
     )
 
