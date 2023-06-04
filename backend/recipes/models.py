@@ -97,7 +97,7 @@ class RecipeIngredient(models.Model):
             MinValueValidator(
                 limit_value=1, message="Количество должно быть больше нуля!"
             ),
-            MaxValueValidator(limit_value=30, message="Слишком много!"),
+            MaxValueValidator(32, message="Слишком много!"),
         ],
     )
 
