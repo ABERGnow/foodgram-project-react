@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -51,13 +52,9 @@ class Recipe(models.Model):
         verbose_name="Время приготовления",
         validators=[
             MinValueValidator(
-                limit_value=1,
-                message="Время приготовления не менее одной минуты!",
+                1, message="Время приготовления не менее одной минуты!"
             ),
-            MaxValueValidator(
-                limit_value=300,
-                message="Очень долго ждать...",
-            ),
+            MaxValueValidator(300, message="Очень долго ждать..."),
         ],
     )
     author = models.ForeignKey(
@@ -98,12 +95,9 @@ class RecipeIngredient(models.Model):
         verbose_name="Количество",
         validators=[
             MinValueValidator(
-                limit_value=1, message="Количество должно быть больше нуля!"
+                Decimal('0.01'), message="Количество должно быть больше нуля!"
             ),
-            MaxValueValidator(
-                limit_value=32,
-                message="Слишком много!",
-            ),
+            MaxValueValidator(32, message="Слишком много!"),
         ],
     )
 
