@@ -95,7 +95,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             RecipeIngredient.objects.filter(
                 recipe__shopping_cart__user=request.user
             )
-            .values_list("ingredient__name", "ingredient__measurement_unit")
+            .values_list(
+                "ingredient__name", "amount", "ingredient__measurement_unit"
+            )
             .annotate(cart_amount=sum('amount').order_by('-amount'))
         )
 
