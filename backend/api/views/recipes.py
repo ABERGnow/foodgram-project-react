@@ -1,3 +1,4 @@
+from itertools import count
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics, ttfonts
@@ -63,6 +64,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if object.exists():
+            object.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=["POST", "DELETE"], detail=True)
     def favorite(self, request, pk):
@@ -87,8 +91,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             RecipeIngredient.objects.annotate(
                 recipe__shopping_cart__user=request.user
             )
-            .values_list("ingredient__name", "ingredient__measurement_unit")
-            .annotate(cart_amount=sum('amount').order_by('-amount'))
+            .values_list("ingredient__name", "amount", "ingredient__measurement_unit")
+            .annotate(cart_amount=count('amount').order_by('-amount'))
         )
 
         ingr_list = {}
