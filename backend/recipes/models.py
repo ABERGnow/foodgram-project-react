@@ -148,7 +148,7 @@ class Favorite(models.Model):
         verbose_name = "Избранный рецепт"
         verbose_name_plural = "Избранные рецепты"
         constraints = (
-            UniqueConstraint(
+            models.UniqueConstraint(
                 fields=("user", "recipe"), name="unique favorite"
             ),
         )
@@ -175,7 +175,7 @@ class ShoppingCart(models.Model):
         verbose_name = "Рецепт в корзине"
         verbose_name_plural = "Рецепты в корзине"
         constraints = (
-            UniqueConstraint(
+            models.UniqueConstraint(
                 fields=("user", "recipe"),
                 name="unique recipe in shopping cart",
             ),
