@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics, ttfonts
@@ -97,9 +98,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
             .values(
                 "ingredient__name",
+                "amount",
                 "ingredient__measurement_unit",
-            )
-            .annotate(shopping_cart_amount=sum('amount').order_by('-amount'))
+            ).annotate(Count('amount')).order_by('-amount')
         )
 
         ingr_list = {}
