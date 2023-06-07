@@ -50,7 +50,7 @@ class Recipe(models.Model):
         max_length=200,
         validators=[
             RegexValidator(
-                regex='r[\d\w]',
+                regex='^[\w]',
                 message='Нельзя использовать только цифр и знаки!',
             )
         ],
