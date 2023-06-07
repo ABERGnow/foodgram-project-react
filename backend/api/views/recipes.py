@@ -22,7 +22,6 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Вьюсет для обработки запросов на получение ингредиентов.
     """
-
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -33,7 +32,6 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для обработки запросов на получение тегов."""
-
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (AllowAny,)
@@ -46,7 +44,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     Обработка запросов создания/получения/редактирования/удаления рецептов.
     Добавление/удаление рецепта в избранное и список покупок.
     """
-
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filter_backends = (DjangoFilterBackend,)
