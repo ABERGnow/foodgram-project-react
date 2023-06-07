@@ -69,18 +69,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        if object.exists():
-            object.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        # if object.exists():
+        #     object.delete()
+        #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     @action(methods=["POST", "DELETE"], detail=True)
     def favorite(self, request, pk):
-        return self.action_post_delete(pk, FavoriteSerializer)
+        return self.action_post(pk, FavoriteSerializer)
 
     @action(methods=["POST", "DELETE"], detail=True)
     def shopping_cart(self, request, pk):
-        return self.action_post_delete(pk, ShoppingCartSerializer)
+        return self.action_post(pk, ShoppingCartSerializer)
 
     @action(detail=False)
     def download_shopping_cart(self, request):
