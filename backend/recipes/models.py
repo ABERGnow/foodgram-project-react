@@ -1,11 +1,12 @@
+from django.db import models
+from django.db.models import UniqueConstraint
 from django.contrib.auth import get_user_model
 from django.core.validators import (
     MaxValueValidator,
     MinValueValidator,
     RegexValidator,
 )
-from django.db import models
-from django.db.models import UniqueConstraint
+
 
 User = get_user_model()
 
@@ -52,9 +53,10 @@ class Recipe(models.Model):
     name = models.CharField(
         verbose_name="Название",
         max_length=200,
-        validators=[RegexValidator(
-            '\S\w[]',
-            message='Нельзя называть рецепт только из цифр и знаков!',
+        validators=[
+            RegexValidator(
+                regex='\w\S',
+                message='Нельзя называть рецепт только из цифр и знаков!',
             )
         ],
     )

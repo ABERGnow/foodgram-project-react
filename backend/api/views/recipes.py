@@ -7,17 +7,17 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from api.filters import IngredientFilter, RecipeFilter
-from api.paginations import LimitPagination
-from api.permissions import IsAuthorOrReadOnly
-from api.serializers.recipes import (
+from ..filters import IngredientFilter, RecipeFilter
+from ..paginations import LimitPagination
+from ..permissions import IsAuthorOrReadOnly
+from ..serializers.recipes import (
     FavoriteSerializer,
     IngredientSerializer,
     RecipeSerializer,
     ShoppingCartSerializer,
     TagSerializer,
 )
-from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
+from recipes.models import Ingredient, RecipeIngredient, Recipe, Tag
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

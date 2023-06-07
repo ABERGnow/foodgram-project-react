@@ -8,8 +8,8 @@ from rest_framework.permissions import (
 )
 from rest_framework.response import Response
 
-from api.paginations import LimitPagination
-from api.serializers.users import FollowSerializer, UsersSerializer
+from ..paginations import LimitPagination
+from ..serializers.users import FollowSerializer, UsersSerializer
 from users.models import Follow, User
 
 
