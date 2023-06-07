@@ -93,7 +93,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             RecipeIngredient.objects.filter(
                 recipe__shopping_cart__user=request.user
             )
-            .values(
+            .values_list(
                 "ingredient__name",
                 "amount",
                 "ingredient__measurement_unit",
