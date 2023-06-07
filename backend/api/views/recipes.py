@@ -70,8 +70,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         if object.exists():
-                object.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
+            object.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     @action(methods=["POST", "DELETE"], detail=True)
