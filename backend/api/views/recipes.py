@@ -11,9 +11,13 @@ from rest_framework.response import Response
 from api.filters import IngredientFilter, RecipeFilter
 from api.paginations import LimitPagination
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers.recipes import (FavoriteSerializer, IngredientSerializer,
-                                     RecipeSerializer, ShoppingCartSerializer,
-                                     TagSerializer)
+from api.serializers.recipes import (
+    FavoriteSerializer,
+    IngredientSerializer,
+    RecipeSerializer,
+    ShoppingCartSerializer,
+    TagSerializer,
+)
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 
 
@@ -53,12 +57,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrReadOnly,)
     pagination_class = LimitPagination
 
-    def action_post_delete(self, pk, serializer_class):
+    def action_post(self, pk, serializer_class):
         user = self.request.user
-        recipe = get_object_or_404(Recipe, pk=pk)
-        object = serializer_class.Meta.model.objects.filter(
-            user=user, recipe=recipe
-        )
 
         if self.request.method == "POST":
             serializer = serializer_class(
@@ -68,15 +68,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        if self.request.method == "DELETE":
-            if object.exists():
-                object.delete()
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            return Response(
-                {"error": "Этого рецепта нет в списке!"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
     @action(methods=["POST", "DELETE"], detail=True)
     def favorite(self, request, pk):
@@ -97,10 +88,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         pdfmetrics.registerFont(arial)
         p.setFont("Arial", 14)
 
-        ingredients = RecipeIngredient.objects.filter(
-            recipe__shopping_cart__user=request.user
-        ).values_list(
-            "ingredient__name", "amount", "ingredient__measurement_unit"
+        ingredients = (
+            RecipeIngredient.objects.annotate(
+                recipe__shopping_cart__user=request.user
+            )
+            .values_list("ingredient__name", "ingredient__measurement_unit")
+            .annotate(cart_amount=sum('amount').order_by('-amount'))
         )
 
         ingr_list = {}

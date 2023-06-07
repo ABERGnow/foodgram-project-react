@@ -1,5 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import (
+    MaxValueValidator,
+    MinValueValidator,
+    RegexValidator,
+)
 from django.db import models
 from django.db.models import UniqueConstraint
 
@@ -45,7 +49,16 @@ class Recipe(models.Model):
         related_name="recipe",
     )
     image = models.ImageField(verbose_name="Картинка", upload_to="recipes/")
-    name = models.CharField(verbose_name="Название", max_length=200)
+    name = models.CharField(
+        verbose_name="Название",
+        max_length=200,
+        validators=[
+            RegexValidator(
+                '\w[]',
+                error_messages='Названия не должны сосстоять только из цифр и знаков!',
+            )
+        ],
+    )
     text = models.TextField(verbose_name="Описание")
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name="Время приготовления",
@@ -64,10 +77,13 @@ class Recipe(models.Model):
         verbose_name="Автор",
     )
     tags = models.ManyToManyField(
-        Tag, verbose_name="Теги", related_name="recipes"
+        Tag,
+        verbose_name="Теги",
+        related_name="recipes",
     )
     pub_date = models.DateTimeField(
-        auto_now=True, verbose_name="Дата публикации"
+        auto_now=True,
+        verbose_name="Дата публикации",
     )
 
     class Meta:
