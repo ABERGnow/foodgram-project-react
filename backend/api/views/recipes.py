@@ -55,9 +55,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def action_post(self, pk, serializer_class):
         user = self.request.user
-        recipe = get_object_or_404(Recipe, pk=pk) 
-        object = serializer_class.Meta.model.objects.filter( 
-            user=user, recipe=recipe 
+        recipe = get_object_or_404(Recipe, pk=pk)
+        object = serializer_class.Meta.model.objects.filter(
+            user=user, recipe=recipe
         )
 
         if self.request.method == "POST":
@@ -68,10 +68,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        if object.exists(): 
-                object.delete() 
-                return Response(status=status.HTTP_204_NO_CONTENT) 
+
+        if object.exists():
+                object.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     @action(methods=["POST", "DELETE"], detail=True)
