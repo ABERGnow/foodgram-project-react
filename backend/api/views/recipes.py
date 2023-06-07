@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics, ttfonts
 from reportlab.pdfgen import canvas
@@ -54,6 +55,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def action_post(self, pk, serializer_class):
         user = self.request.user
+        recipe = get_object_or_404(Recipe, pk=pk) 
+        object = serializer_class.Meta.model.objects.filter( 
+            user=user, recipe=recipe 
+        )
 
         if self.request.method == "POST":
             serializer = serializer_class(
@@ -63,6 +68,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        if object.exists(): 
+                object.delete() 
+                return Response(status=status.HTTP_204_NO_CONTENT) 
+
 
     @action(methods=["POST", "DELETE"], detail=True)
     def favorite(self, request, pk):
