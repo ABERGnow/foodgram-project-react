@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics, ttfonts
 from reportlab.pdfgen import canvas
@@ -52,8 +53,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrReadOnly,)
     pagination_class = LimitPagination
 
-    def action_post(self, pk, serializer_class):
+    def action_post_delete(self, pk, serializer_class):
         user = self.request.user
+        recipe = get_object_or_404(Recipe, pk=pk)
+        object = serializer_class.Meta.model.objects.filter(
+            user=user, recipe=recipe
+        )
 
         if self.request.method == "POST":
             serializer = serializer_class(
@@ -69,11 +74,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(methods=["POST", "DELETE"], detail=True)
     def favorite(self, request, pk):
-        return self.action_post(pk, FavoriteSerializer)
+        return self.action_post_delete(pk, FavoriteSerializer)
 
     @action(methods=["POST", "DELETE"], detail=True)
     def shopping_cart(self, request, pk):
-        return self.action_post(pk, ShoppingCartSerializer)
+        return self.action_post_delete(pk, ShoppingCartSerializer)
 
     @action(detail=False)
     def download_shopping_cart(self, request):
