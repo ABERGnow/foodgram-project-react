@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -69,6 +69,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         if object.exists():
             object.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -93,11 +94,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.setFont("Arial", 14)
 
         ingredients = (
-            RecipeIngredient.objects.annotate(cart_amount=Count('amount'))
-            .order_by('-amount')
-            .filter(recipe__shopping_cart__user=request.user)
+            RecipeIngredient.objects.filter(
+                recipe__shopping_cart__user=request.user
+            )
+            .values('ingredient')
+            .annotate(total_amount=Sum('amount'))
             .values_list(
                 "ingredient__name",
+                "total_amount",
                 "ingredient__measurement_unit",
             )
         )
