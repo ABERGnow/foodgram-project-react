@@ -95,9 +95,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
             .values_list(
                 "ingredient__name",
-                "amount",
                 "ingredient__measurement_unit",
-            ).annotate(Count('amount')).order_by('-amount')
+            ).annotate(cart_amount=Count('amount')).order_by('-amount')
         )
 
         ingr_list = {}
