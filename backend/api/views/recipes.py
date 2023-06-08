@@ -1,3 +1,4 @@
+from itertools import count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -99,7 +100,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 "ingredient__name",
                 "ingredient__measurement_unit",
             )
-            .annotate(shopping_cart_amount=sum('amount'))
+            .annotate(shopping_cart_amount=count('amount'))
             .order_by('-amount')
         )
 
