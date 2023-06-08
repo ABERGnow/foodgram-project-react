@@ -1,5 +1,4 @@
-from itertools import count
-
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -94,15 +93,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         p.setFont("Arial", 14)
 
         ingredients = (
-            RecipeIngredient.objects.filter(
-                recipe__shopping_cart__user=request.user
-            )
+            RecipeIngredient.objects.annotate(cart_amount=Count('amount'))
+            .order_by('-amount')
+            .filter(recipe__shopping_cart__user=request.user)
             .values_list(
                 "ingredient__name",
                 "ingredient__measurement_unit",
             )
-            .annotate(shopping_cart_amount=count('amount'))
-            .order_by('-amount')
         )
 
         ingr_list = {}
