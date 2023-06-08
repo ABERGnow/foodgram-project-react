@@ -51,7 +51,7 @@ class Recipe(models.Model):
         validators=[
             RegexValidator(
                 regex='[А-Яа-яA-Za-z]+[\w]',
-                message='Нельзя использовать только цифры или знаки!',
+                message='Название не должно состоять только цифр или знаков!',
             )
         ],
     )

@@ -99,6 +99,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
             .values('ingredient')
             .annotate(total_amount=Sum('amount'))
+            .order_by('-amount')
             .values_list(
                 "ingredient__name",
                 "total_amount",
